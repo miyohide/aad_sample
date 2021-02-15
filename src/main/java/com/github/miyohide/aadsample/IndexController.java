@@ -6,6 +6,9 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import static com.github.miyohide.aadsample.JsonMapper.toJsonString;
 
 @Controller
 public class IndexController {
@@ -14,5 +17,13 @@ public class IndexController {
         model.addAttribute("userName", authentication.getName());
         model.addAttribute("clientName", azureClient.getClientRegistration().getClientName());
         return "index";
+    }
+
+    @GetMapping("/graph")
+    @ResponseBody
+    public String graph(
+            @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graphClient
+    ) {
+        return toJsonString(graphClient);
     }
 }
